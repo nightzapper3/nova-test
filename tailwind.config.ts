@@ -63,6 +63,7 @@ export default {
           assistant: "hsl(var(--chat-assistant))",
           "assistant-foreground": "hsl(var(--chat-assistant-foreground))",
         },
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

@@ -1,3 +1,2 @@
-# Welcome to your Lovable project
-
-TODO: Document your project here
+# Test Project
+This is a test project developed with the help of Lovable.ai 

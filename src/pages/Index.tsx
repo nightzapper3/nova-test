@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { type Message, streamChat } from "@/lib/chat";
 import ChatMessage from "@/components/ChatMessage";
+import ThinkingIndicator from "@/components/ThinkingIndicator";
+import ContextMeter from "@/components/ContextMeter";
+import DarkModeToggle from "@/components/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import { Send, Sparkles, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -14,7 +17,10 @@ const ChatPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,7 +40,9 @@ const ChatPage = () => {
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.role === "assistant") {
-          return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantContent } : m));
+          return prev.map((m, i) =>
+            i === prev.length - 1 ? { ...m, content: assistantContent } : m
+          );
         }
         return [...prev, { role: "assistant", content: assistantContent }];
       });
@@ -52,7 +60,11 @@ const ChatPage = () => {
       });
     } catch {
       setIsLoading(false);
-      toast({ title: "Error", description: "Failed to connect to AI", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to connect to AI",
+        variant: "destructive",
+      });
     }
   };
 
@@ -69,62 +81,75 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-screen bg-background transition-colors duration-300">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-card transition-colors duration-300">
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-colors duration-300">
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
             <h1 className="text-base font-semibold text-foreground">Nova AI</h1>
-            <p className="text-xs text-muted-foreground">Creative • Intuitive • Intelligent</p>
+            <p className="text-xs text-muted-foreground">
+              Creative • Intuitive • Intelligent
+            </p>
           </div>
         </div>
-        {messages.length > 0 && (
-          <Button variant="ghost" size="icon" onClick={clearChat} title="Clear chat">
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        )}
+        <div className="flex items-center gap-1">
+          <ContextMeter messages={messages} />
+          <DarkModeToggle />
+          {messages.length > 0 && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={clearChat}
+              title="Clear chat"
+              className="transition-transform duration-200 hover:scale-110"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </header>
 
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6">
         <div className="mx-auto max-w-2xl space-y-6">
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center pt-20 text-center">
+            <div className="flex flex-col items-center justify-center pt-20 text-center animate-fade-in">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 mb-4">
                 <Sparkles className="h-8 w-8 text-primary" />
               </div>
-              <h2 className="text-xl font-semibold text-foreground mb-2">How can I help you today?</h2>
+              <h2 className="text-xl font-semibold text-foreground mb-2">
+                How can I help you today?
+              </h2>
               <p className="text-sm text-muted-foreground max-w-sm">
-                I'm Nova, your creative AI assistant. Ask me anything — I can help with writing, coding, analysis, brainstorming, and much more.
+                I'm Nova, your creative AI assistant. Ask me anything — I can
+                help with writing, coding, analysis, brainstorming, and much
+                more.
               </p>
             </div>
           )}
           {messages.map((msg, i) => (
-            <ChatMessage key={i} message={msg} />
+            <ChatMessage
+              key={i}
+              message={msg}
+              isNew={i >= messages.length - 2}
+            />
           ))}
-          {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
-            <div className="flex gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                <Sparkles className="h-4 w-4 animate-pulse" />
-              </div>
-              <div className="bg-chat-assistant border border-border rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
-                <div className="flex gap-1">
-                  <span className="h-2 w-2 rounded-full bg-muted-foreground/40 animate-bounce [animation-delay:0ms]" />
-                  <span className="h-2 w-2 rounded-full bg-muted-foreground/40 animate-bounce [animation-delay:150ms]" />
-                  <span className="h-2 w-2 rounded-full bg-muted-foreground/40 animate-bounce [animation-delay:300ms]" />
-                </div>
-              </div>
-            </div>
-          )}
+          {isLoading &&
+            messages[messages.length - 1]?.role !== "assistant" && (
+              <ThinkingIndicator />
+            )}
         </div>
       </div>
 
       {/* Input */}
-      <div className="border-t border-border bg-card px-4 py-3">
-        <form onSubmit={handleSubmit} className="mx-auto max-w-2xl flex gap-2 items-end">
+      <div className="border-t border-border bg-card px-4 py-3 transition-colors duration-300">
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto max-w-2xl flex gap-2 items-end"
+        >
           <textarea
             ref={inputRef}
             value={input}
@@ -132,7 +157,7 @@ const ChatPage = () => {
             onKeyDown={handleKeyDown}
             placeholder="Type your message..."
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring max-h-32 min-h-[44px]"
+            className="flex-1 resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring max-h-32 min-h-[44px] transition-all duration-200"
             style={{ height: "auto", overflow: "hidden" }}
             onInput={(e) => {
               const t = e.currentTarget;
@@ -140,7 +165,12 @@ const ChatPage = () => {
               t.style.height = Math.min(t.scrollHeight, 128) + "px";
             }}
           />
-          <Button type="submit" size="icon" disabled={!input.trim() || isLoading} className="h-11 w-11 rounded-xl shrink-0">
+          <Button
+            type="submit"
+            size="icon"
+            disabled={!input.trim() || isLoading}
+            className="h-11 w-11 rounded-xl shrink-0 transition-transform duration-200 hover:scale-105"
+          >
             <Send className="h-4 w-4" />
           </Button>
         </form>

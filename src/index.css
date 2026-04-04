@@ -42,6 +42,13 @@ All colors MUST be HSL.
     --chat-user-foreground: 0 0% 100%;
     --chat-assistant: 0 0% 100%;
     --chat-assistant-foreground: 220 25% 10%;
+  }
+
+  .dark {
+    --chat-user: 217 91% 50%;
+    --chat-user-foreground: 0 0% 100%;
+    --chat-assistant: 222 30% 14%;
+    --chat-assistant-foreground: 210 40% 98%;
 
     --sidebar-background: 0 0% 98%;
 

@@ -1,35 +1,56 @@
 import { type Message } from "@/lib/chat";
 import ReactMarkdown from "react-markdown";
-import { Bot, User } from "lucide-react";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
+import { Sparkles, User } from "lucide-react";
 
 interface ChatMessageProps {
   message: Message;
+  isNew?: boolean;
 }
 
-const ChatMessage = ({ message }: ChatMessageProps) => {
+const ChatMessage = ({ message, isNew = false }: ChatMessageProps) => {
   const isUser = message.role === "user";
 
   return (
-    <div className={`flex gap-3 ${isUser ? "flex-row-reverse" : ""}`}>
+    <div
+      className={`flex gap-3 ${isUser ? "flex-row-reverse" : ""} ${
+        isNew ? "animate-fade-in" : ""
+      }`}
+    >
       <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-          isUser ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+          isUser
+            ? "bg-primary text-primary-foreground"
+            : "bg-muted text-muted-foreground"
         }`}
       >
-        {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+        {isUser ? (
+          <User className="h-4 w-4" />
+        ) : (
+          <Sparkles className="h-4 w-4" />
+        )}
       </div>
       <div
-        className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+        className={`max-w-[75%] rounded-2xl px-4 py-3 transition-all duration-200 ${
           isUser
             ? "bg-chat-user text-chat-user-foreground rounded-tr-sm"
             : "bg-chat-assistant text-chat-assistant-foreground shadow-sm border border-border rounded-tl-sm"
         }`}
       >
         {isUser ? (
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            {message.content}
+          </p>
         ) : (
           <div className="prose prose-sm max-w-none dark:prose-invert prose-p:leading-relaxed prose-pre:bg-muted prose-pre:text-foreground prose-code:text-primary prose-code:before:content-none prose-code:after:content-none">
-            <ReactMarkdown>{message.content}</ReactMarkdown>
+            <ReactMarkdown
+              remarkPlugins={[remarkMath]}
+              rehypePlugins={[rehypeKatex]}
+            >
+              {message.content}
+            </ReactMarkdown>
           </div>
         )}
       </div>

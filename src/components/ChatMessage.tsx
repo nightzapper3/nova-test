@@ -20,10 +20,10 @@ const ChatMessage = ({ message, isNew = false }: ChatMessageProps) => {
       }`}
     >
       <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 shadow-sm ${
           isUser
-            ? "bg-primary text-primary-foreground"
-            : "bg-muted text-muted-foreground"
+            ? "gradient-bg text-primary-foreground"
+            : "glass text-muted-foreground"
         }`}
       >
         {isUser ? (
@@ -35,8 +35,8 @@ const ChatMessage = ({ message, isNew = false }: ChatMessageProps) => {
       <div
         className={`max-w-[75%] rounded-2xl px-4 py-3 transition-all duration-200 ${
           isUser
-            ? "bg-chat-user text-chat-user-foreground rounded-tr-sm"
-            : "bg-chat-assistant text-chat-assistant-foreground shadow-sm border border-border rounded-tl-sm"
+            ? "gradient-bg text-primary-foreground rounded-tr-sm shadow-lg"
+            : "glass text-foreground rounded-tl-sm"
         }`}
       >
         {isUser ? (

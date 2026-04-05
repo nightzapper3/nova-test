@@ -8,9 +8,10 @@ import { Sparkles, User } from "lucide-react";
 interface ChatMessageProps {
   message: Message;
   isNew?: boolean;
+  isStreaming?: boolean;
 }
 
-const ChatMessage = ({ message, isNew = false }: ChatMessageProps) => {
+const ChatMessage = ({ message, isNew = false, isStreaming = false }: ChatMessageProps) => {
   const isUser = message.role === "user";
 
   return (
@@ -51,6 +52,9 @@ const ChatMessage = ({ message, isNew = false }: ChatMessageProps) => {
             >
               {message.content}
             </ReactMarkdown>
+            {isStreaming && (
+              <span className="inline-block w-[3px] h-[1.1em] bg-primary rounded-sm align-middle ml-0.5 animate-blink" />
+            )}
           </div>
         )}
       </div>

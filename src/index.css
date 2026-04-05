@@ -2,107 +2,109 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 220 25% 10%;
+    --background: 230 25% 96%;
+    --foreground: 230 25% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 25% 10%;
+    --card-foreground: 230 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 10%;
+    --popover-foreground: 230 25% 10%;
 
-    --primary: 217 91% 60%;
+    --primary: 250 85% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 92%;
-    --secondary-foreground: 220 25% 15%;
+    --secondary: 200 80% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 94%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 230 20% 92%;
+    --muted-foreground: 230 10% 46%;
 
-    --accent: 217 91% 60%;
+    --accent: 320 75% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 90%;
-    --input: 220 13% 90%;
-    --ring: 217 91% 60%;
+    --border: 230 20% 88%;
+    --input: 230 20% 88%;
+    --ring: 250 85% 60%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --chat-user: 217 91% 60%;
+    --chat-user: 250 85% 60%;
     --chat-user-foreground: 0 0% 100%;
     --chat-assistant: 0 0% 100%;
-    --chat-assistant-foreground: 220 25% 10%;
-  }
+    --chat-assistant-foreground: 230 25% 10%;
 
-  .dark {
-    --chat-user: 217 91% 50%;
-    --chat-user-foreground: 0 0% 100%;
-    --chat-assistant: 222 30% 14%;
-    --chat-assistant-foreground: 210 40% 98%;
+    --glass: 0 0% 100%;
+    --glass-border: 0 0% 100%;
+
+    --gradient-start: 250 85% 60%;
+    --gradient-mid: 280 75% 55%;
+    --gradient-end: 320 75% 55%;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-primary: 250 85% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 250 85% 95%;
+    --sidebar-accent-foreground: 250 85% 30%;
+    --sidebar-border: 230 20% 90%;
+    --sidebar-ring: 250 85% 60%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 230 25% 7%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 230 25% 10%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 230 25% 10%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 260 80% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 200 80% 50%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 230 20% 15%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 320 75% 55%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62% 30%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 230 20% 18%;
+    --input: 230 20% 18%;
+    --ring: 260 80% 65%;
+
+    --chat-user: 260 80% 55%;
+    --chat-user-foreground: 0 0% 100%;
+    --chat-assistant: 230 25% 14%;
+    --chat-assistant-foreground: 210 40% 98%;
+
+    --glass: 230 25% 12%;
+    --glass-border: 230 20% 22%;
+
+    --gradient-start: 260 80% 65%;
+    --gradient-mid: 290 70% 55%;
+    --gradient-end: 330 70% 55%;
+
+    --sidebar-background: 230 25% 9%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 260 80% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 230 20% 15%;
+    --sidebar-accent-foreground: 210 40% 90%;
+    --sidebar-border: 230 20% 18%;
+    --sidebar-ring: 260 80% 65%;
   }
 }
 
@@ -113,5 +115,71 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: hsl(var(--glass) / 0.6);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid hsl(var(--glass-border) / 0.3);
+    box-shadow:
+      inset 0 1px 1px hsl(0 0% 100% / 0.1),
+      0 4px 30px hsl(var(--primary) / 0.08);
+  }
+
+  .glass-strong {
+    background: hsl(var(--glass) / 0.75);
+    backdrop-filter: blur(30px) saturate(2);
+    -webkit-backdrop-filter: blur(30px) saturate(2);
+    border: 1px solid hsl(var(--glass-border) / 0.4);
+    box-shadow:
+      inset 0 1px 2px hsl(0 0% 100% / 0.15),
+      0 8px 40px hsl(var(--primary) / 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gradient-start)),
+      hsl(var(--gradient-mid)),
+      hsl(var(--gradient-end))
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-bg {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gradient-start)),
+      hsl(var(--gradient-mid)),
+      hsl(var(--gradient-end))
+    );
+  }
+
+  .gradient-border {
+    position: relative;
+    border: none;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gradient-start) / 0.5),
+      hsl(var(--gradient-mid) / 0.3),
+      hsl(var(--gradient-end) / 0.5)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }

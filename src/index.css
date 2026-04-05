@@ -10,7 +10,7 @@
   .animate-blink {
     animation: blink 0.8s step-end infinite;
   }
-
+}
 
 @layer base {
   :root {

@@ -206,6 +206,7 @@ const ChatPage = () => {
                 key={i}
                 message={msg}
                 isNew={i >= messages.length - 2}
+                isStreaming={isLoading && msg.role === "assistant" && i === messages.length - 1}
               />
             ))}
             {isLoading &&

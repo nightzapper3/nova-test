@@ -5,6 +5,7 @@ import ThinkingIndicator from "@/components/ThinkingIndicator";
 import ContextMeter from "@/components/ContextMeter";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import ChatSidebar from "@/components/ChatSidebar";
+import ModelSelector from "@/components/ModelSelector";
 import { Button } from "@/components/ui/button";
 import { Send, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -40,6 +41,7 @@ const ChatPage = () => {
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("google/gemini-3-flash-preview");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
@@ -99,6 +101,7 @@ const ChatPage = () => {
     try {
       await streamChat({
         messages: [...messages, userMsg],
+        model: selectedModel,
         onDelta: updateAssistant,
         onDone: async () => {
           setIsLoading(false);
@@ -194,7 +197,7 @@ const ChatPage = () => {
                   }}
                 />
                 <div className="flex items-center justify-between px-4 pb-3">
-                  <div />
+                  <ModelSelector selectedModel={selectedModel} onModelChange={setSelectedModel} />
                   <Button
                     type="submit"
                     size="icon"

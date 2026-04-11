@@ -197,7 +197,7 @@ const ChatPage = () => {
                   }}
                 />
                 <div className="flex items-center justify-between px-4 pb-3">
-                  <div />
+                  <ModelSelector selectedModel={selectedModel} onModelChange={setSelectedModel} />
                   <Button
                     type="submit"
                     size="icon"

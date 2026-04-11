@@ -13,29 +13,29 @@ import { useConversations } from "@/hooks/useConversations";
 import Auth from "./Auth";
 
 const GREETINGS = [
+  "What can I help with?",
   "How can I help you today?",
   "What's on your mind?",
-  "Ready to brainstorm something?",
-  "What shall we explore together?",
-  "Got a question? I'm all ears!",
-  "Let's create something amazing!",
-  "What can I do for you?",
-  "Need help with anything?",
+  "Ready when you are.",
+  "What shall we explore?",
+  "Let's create something.",
+  "Ask me anything.",
+  "What do you need?",
+];
+
+const SUGGESTION_CHIPS = [
+  { label: "Write", icon: "✍️" },
+  { label: "Plan", icon: "📋" },
+  { label: "Research", icon: "🔍" },
+  { label: "Learn", icon: "💡" },
 ];
 
 const ChatPage = () => {
   const { user, loading: authLoading, signOut } = useAuth();
   const {
-    conversations,
-    activeId,
-    messages,
-    setMessages,
-    selectConversation,
-    createConversation,
-    newChat,
-    saveMessage,
-    deleteConversation,
-    updateTitle,
+    conversations, activeId, messages, setMessages,
+    selectConversation, createConversation, newChat,
+    saveMessage, deleteConversation, updateTitle,
   } = useConversations(user?.id);
 
   const [input, setInput] = useState("");
@@ -50,20 +50,14 @@ const ChatPage = () => {
   );
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
   if (authLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-background">
         <div className="flex flex-col items-center gap-3 animate-fade-in">
-          <div className="h-12 w-12 rounded-2xl gradient-bg flex items-center justify-center shadow-lg">
-            <Sparkles className="h-6 w-6 text-primary-foreground animate-spin" style={{ animationDuration: "3s" }} />
-          </div>
-          <p className="text-sm text-muted-foreground">Loading...</p>
+          <div className="h-10 w-10 rounded-full border-2 border-primary border-t-transparent animate-spin" />
         </div>
       </div>
     );
@@ -77,8 +71,6 @@ const ChatPage = () => {
     if (!text || isLoading) return;
 
     const userMsg: Message = { role: "user", content: text };
-
-    // Create or use existing conversation
     let convId = activeId;
     if (!convId) {
       convId = await createConversation(text);
@@ -90,22 +82,15 @@ const ChatPage = () => {
     setIsLoading(true);
 
     await saveMessage(convId, userMsg);
-
-    // If first message, title is already set from createConversation
-    if (messages.length === 0 && activeId) {
-      updateTitle(convId, text);
-    }
+    if (messages.length === 0 && activeId) updateTitle(convId, text);
 
     let assistantContent = "";
-
     const updateAssistant = (chunk: string) => {
       assistantContent += chunk;
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.role === "assistant") {
-          return prev.map((m, i) =>
-            i === prev.length - 1 ? { ...m, content: assistantContent } : m
-          );
+          return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantContent } : m);
         }
         return [...prev, { role: "assistant", content: assistantContent }];
       });
@@ -117,9 +102,7 @@ const ChatPage = () => {
         onDelta: updateAssistant,
         onDone: async () => {
           setIsLoading(false);
-          if (convId && assistantContent) {
-            await saveMessage(convId, { role: "assistant", content: assistantContent });
-          }
+          if (convId && assistantContent) await saveMessage(convId, { role: "assistant", content: assistantContent });
         },
         onError: (err) => {
           setIsLoading(false);
@@ -128,30 +111,21 @@ const ChatPage = () => {
       });
     } catch {
       setIsLoading(false);
-      toast({
-        title: "Error",
-        description: "Failed to connect to AI",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to connect to AI", variant: "destructive" });
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(e);
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSubmit(e); }
+  };
+
+  const handleChipClick = (label: string) => {
+    setInput(`Help me ${label.toLowerCase()}`);
+    inputRef.current?.focus();
   };
 
   return (
-    <div className="flex h-screen bg-background transition-colors duration-300 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-primary opacity-[0.06] blur-3xl" />
-        <div className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-accent opacity-[0.06] blur-3xl" />
-      </div>
-
-      {/* Sidebar */}
+    <div className="flex h-screen bg-background transition-colors duration-300">
       <ChatSidebar
         activeId={activeId}
         onSelect={selectConversation}
@@ -162,90 +136,96 @@ const ChatPage = () => {
         userEmail={user.email}
       />
 
-      {/* Main Chat Area */}
-      <div className="flex flex-col flex-1 min-w-0 relative">
+      <div className="flex flex-col flex-1 min-w-0">
         {/* Header */}
-        <header className="flex items-center justify-between px-4 py-3 glass-strong border-b border-border/50 z-10">
+        <header className="flex items-center justify-between px-6 py-3 border-b border-border">
           <div className="flex items-center gap-2 ml-12 md:ml-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-bg shadow-md">
-              <Sparkles className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-base font-semibold gradient-text">Nova AI</h1>
-              <p className="text-xs text-muted-foreground">
-                Creative • Intuitive • Intelligent
-              </p>
-            </div>
+            <h1 className="text-lg font-semibold text-foreground">Nova</h1>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <ContextMeter messages={messages} />
             <DarkModeToggle />
           </div>
         </header>
 
         {/* Messages */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6">
-          <div className="mx-auto max-w-2xl space-y-6">
-            {messages.length === 0 && (
-              <div className="flex flex-col items-center justify-center pt-20 text-center animate-fade-in">
-                <div className="flex h-20 w-20 items-center justify-center rounded-3xl gradient-bg mb-6 shadow-xl">
-                  <Sparkles className="h-10 w-10 text-primary-foreground" />
-                </div>
-                <h2 className="text-2xl font-bold gradient-text mb-3">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto">
+          <div className="mx-auto max-w-3xl px-4 py-6">
+            {messages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center min-h-[60vh] text-center animate-fade-in">
+                <h2 className="text-4xl md:text-5xl font-light tracking-tight gemini-gradient-text mb-16 leading-tight">
                   {greeting}
                 </h2>
-                <p className="text-sm text-muted-foreground max-w-sm">
-                  I'm Nova, your creative AI assistant. Ask me anything — I can
-                  help with writing, coding, analysis, brainstorming, and much
-                  more.
-                </p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {messages.map((msg, i) => (
+                  <ChatMessage
+                    key={i}
+                    message={msg}
+                    isNew={i >= messages.length - 2}
+                    isStreaming={isLoading && msg.role === "assistant" && i === messages.length - 1}
+                  />
+                ))}
+                {isLoading && messages[messages.length - 1]?.role !== "assistant" && <ThinkingIndicator />}
               </div>
             )}
-            {messages.map((msg, i) => (
-              <ChatMessage
-                key={i}
-                message={msg}
-                isNew={i >= messages.length - 2}
-                isStreaming={isLoading && msg.role === "assistant" && i === messages.length - 1}
-              />
-            ))}
-            {isLoading &&
-              messages[messages.length - 1]?.role !== "assistant" && (
-                <ThinkingIndicator />
-              )}
           </div>
         </div>
 
-        {/* Input */}
-        <div className="glass-strong border-t border-border/50 px-4 py-3 z-10">
-          <form
-            onSubmit={handleSubmit}
-            className="mx-auto max-w-2xl flex gap-2 items-end"
-          >
-            <textarea
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Type your message..."
-              rows={1}
-              className="flex-1 resize-none rounded-xl glass px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring max-h-32 min-h-[44px] transition-all duration-200 border-0"
-              style={{ height: "auto", overflow: "hidden" }}
-              onInput={(e) => {
-                const t = e.currentTarget;
-                t.style.height = "auto";
-                t.style.height = Math.min(t.scrollHeight, 128) + "px";
-              }}
-            />
-            <Button
-              type="submit"
-              size="icon"
-              disabled={!input.trim() || isLoading}
-              className="h-11 w-11 rounded-xl shrink-0 gradient-bg text-primary-foreground shadow-md hover:scale-105 transition-all duration-200"
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </form>
+        {/* Input area */}
+        <div className="px-4 pb-6 pt-2">
+          <div className="mx-auto max-w-3xl">
+            <form onSubmit={handleSubmit} className="relative">
+              <div className="rounded-3xl border border-border bg-card overflow-hidden shadow-sm transition-shadow focus-within:shadow-md focus-within:border-primary/30">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask Nova"
+                  rows={1}
+                  className="w-full resize-none px-6 pt-4 pb-2 text-sm text-foreground placeholder:text-muted-foreground bg-transparent focus:outline-none max-h-32 min-h-[44px]"
+                  style={{ height: "auto", overflow: "hidden" }}
+                  onInput={(e) => {
+                    const t = e.currentTarget;
+                    t.style.height = "auto";
+                    t.style.height = Math.min(t.scrollHeight, 128) + "px";
+                  }}
+                />
+                <div className="flex items-center justify-between px-4 pb-3">
+                  <div />
+                  <Button
+                    type="submit"
+                    size="icon"
+                    disabled={!input.trim() || isLoading}
+                    className="h-9 w-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 transition-all"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </form>
+
+            {/* Suggestion chips */}
+            {messages.length === 0 && (
+              <div className="flex items-center justify-center gap-2 mt-4 animate-fade-in">
+                {SUGGESTION_CHIPS.map((chip) => (
+                  <button
+                    key={chip.label}
+                    onClick={() => handleChipClick(chip.label)}
+                    className="px-4 py-2 rounded-full border border-border bg-card text-sm text-foreground hover:bg-accent transition-colors duration-200"
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <p className="text-center text-xs text-muted-foreground mt-3">
+              Nova can make mistakes. Consider checking important information.
+            </p>
+          </div>
         </div>
       </div>
     </div>

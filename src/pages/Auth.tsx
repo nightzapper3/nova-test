@@ -4,7 +4,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 import DarkModeToggle from "@/components/DarkModeToggle";
 
 const Auth = () => {
@@ -36,12 +36,8 @@ const Auth = () => {
   const handleOAuth = async (provider: "google" | "apple") => {
     setLoading(true);
     try {
-      const result = await lovable.auth.signInWithOAuth(provider, {
-        redirect_uri: window.location.origin,
-      });
-      if (result.error) {
-        toast({ title: "Error", description: String(result.error), variant: "destructive" });
-      }
+      const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin });
+      if (result.error) toast({ title: "Error", description: String(result.error), variant: "destructive" });
       if (result.redirected) return;
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -51,34 +47,26 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full gradient-bg opacity-20 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-secondary opacity-20 blur-3xl animate-pulse [animation-delay:1s]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent opacity-10 blur-3xl animate-pulse [animation-delay:2s]" />
-      </div>
-
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="absolute top-4 right-4">
         <DarkModeToggle />
       </div>
 
-      <div className="w-full max-w-md mx-4 glass-strong rounded-3xl p-8 animate-fade-in">
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl gradient-bg mb-4 shadow-lg">
-            <Sparkles className="h-7 w-7 text-primary-foreground" />
+      <div className="w-full max-w-md mx-4 animate-fade-in">
+        <div className="flex flex-col items-center mb-10">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-4">
+            <Sparkles className="h-6 w-6 text-primary" />
           </div>
-          <h1 className="text-2xl font-bold gradient-text">Nova AI</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {isLogin ? "Welcome back" : "Create your account"}
+          <h1 className="text-3xl font-light gemini-gradient-text">Welcome to Nova</h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            {isLogin ? "Sign in to continue" : "Create your account"}
           </p>
         </div>
 
-        {/* OAuth Buttons */}
         <div className="space-y-3 mb-6">
           <Button
             variant="outline"
-            className="w-full h-12 glass rounded-xl text-sm font-medium gap-3 hover:scale-[1.02] transition-all duration-200"
+            className="w-full h-12 rounded-full text-sm font-medium gap-3"
             onClick={() => handleOAuth("google")}
             disabled={loading}
           >
@@ -92,7 +80,7 @@ const Auth = () => {
           </Button>
           <Button
             variant="outline"
-            className="w-full h-12 glass rounded-xl text-sm font-medium gap-3 hover:scale-[1.02] transition-all duration-200"
+            className="w-full h-12 rounded-full text-sm font-medium gap-3"
             onClick={() => handleOAuth("apple")}
             disabled={loading}
           >
@@ -105,40 +93,14 @@ const Auth = () => {
 
         <div className="flex items-center gap-3 mb-6">
           <div className="flex-1 h-px bg-border" />
-          <span className="text-xs text-muted-foreground">or continue with email</span>
+          <span className="text-xs text-muted-foreground">or</span>
           <div className="flex-1 h-px bg-border" />
         </div>
 
-        {/* Email Form */}
         <form onSubmit={handleEmailAuth} className="space-y-4">
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 h-12 rounded-xl glass border-0"
-              required
-            />
-          </div>
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 h-12 rounded-xl glass border-0"
-              required
-              minLength={6}
-            />
-          </div>
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full h-12 rounded-xl gradient-bg text-primary-foreground font-medium hover:scale-[1.02] transition-all duration-200 shadow-lg"
-          >
+          <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 rounded-full px-5" required />
+          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-12 rounded-full px-5" required minLength={6} />
+          <Button type="submit" disabled={loading} className="w-full h-12 rounded-full font-medium">
             {isLogin ? "Sign In" : "Create Account"}
             <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
@@ -146,10 +108,7 @@ const Auth = () => {
 
         <p className="text-center text-sm text-muted-foreground mt-6">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-primary font-medium hover:underline"
-          >
+          <button onClick={() => setIsLogin(!isLogin)} className="text-primary font-medium hover:underline">
             {isLogin ? "Sign up" : "Sign in"}
           </button>
         </p>

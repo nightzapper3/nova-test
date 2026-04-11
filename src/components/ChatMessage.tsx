@@ -15,41 +15,20 @@ const ChatMessage = ({ message, isNew = false, isStreaming = false }: ChatMessag
   const isUser = message.role === "user";
 
   return (
-    <div
-      className={`flex gap-3 ${isUser ? "flex-row-reverse" : ""} ${
-        isNew ? "animate-fade-in" : ""
-      }`}
-    >
-      <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 shadow-sm ${
-          isUser
-            ? "gradient-bg text-primary-foreground"
-            : "glass text-muted-foreground"
-        }`}
-      >
+    <div className={`flex gap-4 ${isNew ? "animate-fade-in" : ""} ${isUser ? "justify-end" : ""}`}>
+      {!isUser && (
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 mt-1">
+          <Sparkles className="h-4 w-4 text-primary" />
+        </div>
+      )}
+      <div className={`${isUser ? "max-w-[70%]" : "flex-1 max-w-none"}`}>
         {isUser ? (
-          <User className="h-4 w-4" />
+          <div className="bg-primary text-primary-foreground rounded-2xl rounded-tr-md px-4 py-3">
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+          </div>
         ) : (
-          <Sparkles className="h-4 w-4" />
-        )}
-      </div>
-      <div
-        className={`max-w-[75%] rounded-2xl px-4 py-3 transition-all duration-200 ${
-          isUser
-            ? "gradient-bg text-primary-foreground rounded-tr-sm shadow-lg"
-            : "glass text-foreground rounded-tl-sm"
-        }`}
-      >
-        {isUser ? (
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">
-            {message.content}
-          </p>
-        ) : (
-          <div className="prose prose-sm max-w-none dark:prose-invert prose-p:leading-relaxed prose-pre:bg-muted prose-pre:text-foreground prose-code:text-primary prose-code:before:content-none prose-code:after:content-none">
-            <ReactMarkdown
-              remarkPlugins={[remarkMath]}
-              rehypePlugins={[rehypeKatex]}
-            >
+          <div className="prose prose-sm max-w-none dark:prose-invert prose-p:leading-relaxed prose-p:my-2 prose-pre:bg-muted prose-pre:text-foreground prose-pre:rounded-xl prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-headings:font-semibold text-foreground">
+            <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
               {message.content}
             </ReactMarkdown>
             {isStreaming && (

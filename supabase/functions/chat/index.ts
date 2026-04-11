@@ -10,7 +10,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages } = await req.json();
+    const { messages, model } = await req.json();
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return new Response(JSON.stringify({ error: "Messages array is required" }), {
@@ -18,6 +18,19 @@ serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    const allowedModels = [
+      "google/gemini-3-flash-preview",
+      "google/gemini-2.5-pro",
+      "google/gemini-2.5-flash",
+      "google/gemini-2.5-flash-lite",
+      "google/gemini-3.1-pro-preview",
+      "openai/gpt-5",
+      "openai/gpt-5-mini",
+      "openai/gpt-5-nano",
+      "openai/gpt-5.2",
+    ];
+    const selectedModel = allowedModels.includes(model) ? model : "google/gemini-3-flash-preview";
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -29,7 +42,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: selectedModel,
         messages: [
           {
             role: "system",

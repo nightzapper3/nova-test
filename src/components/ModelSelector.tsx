@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +33,15 @@ const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => 
   const selected = AI_MODELS.find((m) => m.id === selectedModel) || AI_MODELS[0];
   const providers = [...new Set(AI_MODELS.map((m) => m.provider))];
 
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
   return (
     <div className="relative" ref={ref}>
       <button
@@ -44,31 +53,33 @@ const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => 
       </button>
 
       {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute bottom-full left-0 mb-2 w-64 rounded-xl border border-border bg-card shadow-lg z-50 py-1 animate-fade-in max-h-80 overflow-y-auto">
-            {providers.map((provider) => (
-              <div key={provider}>
-                <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  {provider}
-                </p>
-                {AI_MODELS.filter((m) => m.provider === provider).map((model) => (
-                  <button
-                    key={model.id}
-                    onClick={() => { onModelChange(model.id); setOpen(false); }}
-                    className={cn(
-                      "w-full flex flex-col px-3 py-2 text-left hover:bg-accent transition-colors",
-                      model.id === selectedModel && "bg-accent"
-                    )}
-                  >
-                    <span className="text-sm text-foreground">{model.label}</span>
+        <div className="absolute bottom-full left-0 mb-2 w-72 rounded-xl border border-border bg-card shadow-lg z-50 py-2 animate-fade-in max-h-80 overflow-y-auto">
+          {providers.map((provider) => (
+            <div key={provider}>
+              <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {provider}
+              </p>
+              {AI_MODELS.filter((m) => m.provider === provider).map((model) => (
+                <button
+                  key={model.id}
+                  onClick={() => { onModelChange(model.id); setOpen(false); }}
+                  className={cn(
+                    "w-full flex items-center justify-between px-3 py-2.5 text-left hover:bg-accent transition-colors",
+                    model.id === selectedModel && "bg-accent"
+                  )}
+                >
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-foreground">{model.label}</span>
                     <span className="text-xs text-muted-foreground">{model.description}</span>
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
-        </>
+                  </div>
+                  {model.id === selectedModel && (
+                    <div className="h-2 w-2 rounded-full bg-primary shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

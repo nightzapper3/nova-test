@@ -7,7 +7,8 @@ import DarkModeToggle from "@/components/DarkModeToggle";
 import ChatSidebar from "@/components/ChatSidebar";
 import ModelSelector from "@/components/ModelSelector";
 import { Button } from "@/components/ui/button";
-import { Send, Sparkles } from "lucide-react";
+import { Send } from "lucide-react";
+import novaLogo from "@/assets/nova-logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useConversations } from "@/hooks/useConversations";
@@ -143,6 +144,7 @@ const ChatPage = () => {
         {/* Header */}
         <header className="flex items-center justify-between px-6 py-3 border-b border-border">
           <div className="flex items-center gap-2 ml-12 md:ml-0">
+            <img src={novaLogo} alt="Nova" className="h-7 w-7 object-contain" />
             <h1 className="text-lg font-semibold text-foreground">Nova</h1>
           </div>
           <div className="flex items-center gap-2">

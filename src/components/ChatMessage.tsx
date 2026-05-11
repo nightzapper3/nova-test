@@ -19,7 +19,7 @@ const ChatMessage = ({ message, isNew = false, isStreaming = false }: ChatMessag
     <div className={`flex gap-4 ${isNew ? "animate-fade-in" : ""} ${isUser ? "justify-end" : ""}`}>
       {!isUser && (
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 mt-1 overflow-hidden">
-          <img src={novaLogo} alt="Nova" className="h-6 w-6 object-contain" />
+          <img src={lambdaLogo} alt="Lambda" className="h-6 w-6 object-contain" />
         </div>
       )}
       <div className={`${isUser ? "max-w-[70%]" : "flex-1 max-w-none"}`}>

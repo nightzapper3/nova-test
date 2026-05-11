@@ -56,9 +56,9 @@ const Auth = () => {
       <div className="w-full max-w-md mx-4 animate-fade-in">
         <div className="flex flex-col items-center mb-10">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 mb-4 overflow-hidden">
-            <img src={novaLogo} alt="Nova" className="h-10 w-10 object-contain" />
+            <img src={lambdaLogo} alt="Lambda" className="h-10 w-10 object-contain" />
           </div>
-          <h1 className="text-3xl font-light gemini-gradient-text">Welcome to Nova</h1>
+          <h1 className="text-3xl font-light gemini-gradient-text">Welcome to Lambda</h1>
           <p className="text-sm text-muted-foreground mt-2">
             {isLogin ? "Sign in to continue" : "Create your account"}
           </p>

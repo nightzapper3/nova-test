@@ -144,8 +144,8 @@ const ChatPage = () => {
         {/* Header */}
         <header className="flex items-center justify-between px-6 py-3 border-b border-border">
           <div className="flex items-center gap-2 ml-12 md:ml-0">
-            <img src={novaLogo} alt="Nova" className="h-7 w-7 object-contain" />
-            <h1 className="text-lg font-semibold text-foreground">Nova</h1>
+            <img src={lambdaLogo} alt="Lambda" className="h-7 w-7 object-contain" />
+            <h1 className="text-lg font-semibold text-foreground">Lambda</h1>
           </div>
           <div className="flex items-center gap-2">
             <ContextMeter messages={messages} />
@@ -188,7 +188,7 @@ const ChatPage = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask Nova"
+                  placeholder="Ask Lambda"
                   rows={1}
                   className="w-full resize-none px-6 pt-4 pb-2 text-sm text-foreground placeholder:text-muted-foreground bg-transparent focus:outline-none max-h-32 min-h-[44px]"
                   style={{ height: "auto", overflow: "hidden" }}
@@ -228,7 +228,7 @@ const ChatPage = () => {
             )}
 
             <p className="text-center text-xs text-muted-foreground mt-3">
-              Nova can make mistakes. Consider checking important information.
+              Lambda can make mistakes. Consider checking important information.
             </p>
           </div>
         </div>

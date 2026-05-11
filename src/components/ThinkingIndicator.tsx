@@ -1,4 +1,4 @@
-import novaLogo from "@/assets/nova-logo.png";
+import lambdaLogo from "@/assets/lambda-logo.png";
 
 const ThinkingIndicator = () => {
   return (

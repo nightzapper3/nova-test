@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight } from "lucide-react";
 import DarkModeToggle from "@/components/DarkModeToggle";
-import novaLogo from "@/assets/nova-logo.png";
+import lambdaLogo from "@/assets/lambda-logo.png";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);

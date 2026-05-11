@@ -8,7 +8,7 @@ import ChatSidebar from "@/components/ChatSidebar";
 import ModelSelector from "@/components/ModelSelector";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
-import novaLogo from "@/assets/nova-logo.png";
+import lambdaLogo from "@/assets/lambda-logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useConversations } from "@/hooks/useConversations";

@@ -4,7 +4,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import { User } from "lucide-react";
-import novaLogo from "@/assets/nova-logo.png";
+import lambdaLogo from "@/assets/lambda-logo.png";
 
 interface ChatMessageProps {
   message: Message;
